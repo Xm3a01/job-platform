@@ -6,16 +6,16 @@
   "Remember Me": "حفظ",
   "Forgot Your Password?": "نسيت كلمة المرور",
   "Dont have account? register now": "ليس لديك حساب؟ سجل الان",
-  "Register": "تسجيل جديد", 
+  "Register": "تسجيل جديد",
   "Remember me": "تذكرني",
   "Home": "الرئيسية",
   "Research results": "نتائج بحث",
-  "Create Your CV": "أضف سيرتك الذاتية",  
+  "Create Your CV": "أضف سيرتك الذاتية",
   "Make your Resume Professional": "اجعل سيرتك الذاتية إحترافية",
   "Write a professional resume": " اكتب سيرة ذاتية إحترافية",
   "Print": "طباعة",
   "View all jobs": "عرض جميع الوظائف",
-  "Contact US": "اتصل بنا", 
+  "Contact US": "اتصل بنا",
   "Top Categories": "الفئات الأعلي",
   "Job Title": "المسمي الوظيفي",
   "Choose Level": "اختر المستوي",
@@ -30,7 +30,7 @@
   "or": "أو",
   "City": "المدينة",
   "Country": "الدولة",
-  "City or Country":  "المدينة او الدولة", 
+  "City or Country":  "المدينة او الدولة",
   "My Workspace": "الصفحة الشخصية",
   "Search Job": "ابحث عن وظيفة",
   "Categories": "التصنيفات",
@@ -58,7 +58,7 @@
   "Our Partners in Success": "شركاءنا في النجاح",
   "Join Current Recruited Employers": "انضم لأصحاب العمل المعينين حالياً",
   "Blog": "المدونة",
-  "About Company": "عن الشركة", 
+  "About Company": "عن الشركة",
   "About Us": "عن امواج الخليج",
   "About Gulf Waves": "عن امواج الخليج",
   "Full Name": "الاسم رباعي",
@@ -72,7 +72,7 @@
   "Enter Full Name": "ادخل الاسم رباعي",
   "Employer?": "صاحب عمل؟",
   "Logo": "الشعار",
-  "Quick Menu": "القائمة السريعة", 
+  "Quick Menu": "القائمة السريعة",
   "Download": "تحميل",
   "Full Time": "دوام كامل",
   "Part Time": "دوام جزئي",
@@ -167,7 +167,7 @@
   "Change Image": "تغيير الصورة",
   "Personal photo": "الصورة الشخصيه",
   "Change Password": "تغيير كلمة السر",
-  "Confirm Password": "تأكيد كلمة المرور", 
+  "Confirm Password": "تأكيد كلمة المرور",
   "Personal Information": "المعلومات الشخصية",
   "Personal Info": "المعلومات الشخصية",
   "Nationality": "الجنسية",
@@ -195,7 +195,7 @@
    "Add your specialty": "أضف تخصصك",
    "Add your CV": "أضف سيرتك الذاتية",
    "Enter E-mail": "ادخل البريد الالكتروني",
-   "Enter Phone Number": "ادخل رقم الهاتف", 
+   "Enter Phone Number": "ادخل رقم الهاتف",
    "Previous": "السابق",
    "Next": "التالي",
    "Save": "حفظ",
@@ -305,10 +305,10 @@
    "Connect with the largest community of physicians in the Middle East from all medical disciplines and levels. More than 100 doctors join the Gulf Waves daily": "تواصل مع أكبر مجتمع أطباء في الشرق الأوسط من كافة المجالات الطبية والتخصصات المختلفة. أكثر من 100 طبيب ينضم الى امواج الخليج يومياً",
    "Hire the ideal candidate and increase your companys profits. Choose the right solution for you according to your budget and time": "قم بتوظيف المرشح المثالي وزيادة أرباح شركتك. اختر ما يناسبك من الحلول المتوفرة وفقاً لميزانيتك ووقتك",
    "Market your company as the best place to work by creating a page for your company and a job site, and using effective marketing tools": "سوّق شركتك كأفضل مكان للعمل من خلال إنشاء صفحة لشركتك وموقع توظيف خاص بها، واستخدام أدوات التسويق الفعّالة",
-   "": ""
-   
+   "None Required": "اختياري"
 
 
-   
-                                                                                                                              
+
+
+
 }

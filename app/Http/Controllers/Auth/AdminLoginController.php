@@ -16,7 +16,7 @@ class AdminLoginController extends Controller
     {
         if(Auth::guard('owner')->check()) {
             return \redirect()->route('owners.index' ,app()->getLocale());
-        } else { 
+        } else {
         $this->middleware('guest:admin')->except('logout');
         }
     }
@@ -34,14 +34,14 @@ class AdminLoginController extends Controller
         public function redirectTo() {
 
             return redirect()->route('admin.dashboard' , app()->getLocale());
-        } 
-    
+        }
+
 
     public function adminLogin(Request $request)
-    {  
+    {
         $this->validate($request, [
             'email' => 'required|email',
-            'password' => 'required|min:8'
+            'password' => 'required|min:6'
         ]);
 
         $data =[

@@ -1,6 +1,6 @@
 @extends('layouts.defultowner')
 @section('content')
-    
+
 
 <div class="unit-5 overlay  " style="background-image: url(' {{asset('asset/images/hero_1.jpg')}} ');">
     <div class="container">
@@ -10,16 +10,16 @@
                    <h1 class="h3 text-center text-white pt-2">
                     {{__('Hire Job Seekers Quickly Search from')}}  {{$users->count()}}  {{__('CVs')}}  </h1>
                    </div>
-                <form action="{{route('search.cv' ,app()->getLocale())}}" method="GET">
+                <form action="{{route('search.cv')}}" method="GET">
                    <div class="row mb-3">
                        <div class="col-md-9">
                            <div class="row">
                                <div class="col-md-6 mb-3 mb-md-0">
                                    <div class="input-wrap">
-                                       <span class="icon icon-keyboard"></span> 
+                                       <span class="icon icon-keyboard"></span>
                                        <input type="text" class=" form-control border-0 px-3" list = "special" autocomplete ="off"  placeholder=" {{__('Search by Job title')}} " name="special">
                                            <datalist id="special">
-                                               @foreach ($specials as $special)    
+                                               @foreach ($specials as $special)
                                                <option value="{{app()->getLocale() == 'ar' ? $special->ar_name : $special->name}}">
                                                @endforeach
                                            </datalist>
@@ -31,7 +31,7 @@
                                        <input type="text" class="form-control border-0 px-3" list="country" autocomplete ="off" placeholder=" {{__('City or Country')}}  " name="place">
                                            <datalist id ="country">
                                                @foreach ($countries as $country)
-                                               <option value="{{app()->getLocale() == 'ar' ? $country->ar_name : $country->name}}"> 
+                                               <option value="{{app()->getLocale() == 'ar' ? $country->ar_name : $country->name}}">
                                                @endforeach
                                            </datalist>
                                    </div>
@@ -66,7 +66,7 @@
                </div>
                <div class="col-sm-6 col-md-4"> <img src="{{asset('asset/images/light-bulb.png')}}" width="6%" alt="">
                     <p>{{__('Market your company as the best place to work by creating a page for your company and a job site, and using effective marketing tools')}}</p>
-               </div> 
+               </div>
            </div>
         </div>
    </div>
@@ -85,8 +85,8 @@
                               <p class="card-text"> $ {{$price->price ?? '' }}/<span>Year</span> </p>
                             <ul class="list-group list-group-flush">
                                <li class="list-group-item">{{app()->getLocale() == 'ar' ? $price->have_one ?? '' : $price->have_two ?? ''}}</li>
-                               <li class="list-group-item">{{app()->getLocale() == 'ar' ? $price->have_three ?? '' : $price->have_four ?? ''}}</li> 
-                           </ul> 
+                               <li class="list-group-item">{{app()->getLocale() == 'ar' ? $price->have_three ?? '' : $price->have_four ?? ''}}</li>
+                           </ul>
                        </div>
                    </div>
                </div>
@@ -95,9 +95,9 @@
        </div>
 </div>
 
-<div class="py-5 bg-light text-center"> 
+<div class="py-5 bg-light text-center">
     <img src="{{asset('vendor/images/noimage_person.png')}}" class="rounded-circle pb-2" alt="" width="20%">
-      <h2 class="pt-2">{{__('Contact us and we will be happy to help')}} </h2>    
+      <h2 class="pt-2">{{__('Contact us and we will be happy to help')}} </h2>
      <h3 class="py-1 text-info"> {{__('Contact Us On')}}   002490910440407</h3>
 </div>
 

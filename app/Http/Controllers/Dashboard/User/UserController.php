@@ -33,8 +33,8 @@ class UserController extends Controller
     public $social_status = [
         'Married' => 'متزوج',
         'Single' => 'اعزب',
-    ];  
-    
+    ];
+
     public $religion = [
         'Muslime' => 'مسلم',
         'Christian' => 'مسيحي',
@@ -82,7 +82,7 @@ class UserController extends Controller
         } else {
           $jobs = Job::where('country_id',$user->country_id)->where('selected',0)->orWhere('role_id', $user->role_id)->get();
         }
-         
+
         if($user->visit_count <= 1) {
             $about = About::latest()->take(1)->first();
             $cities = City::all();
@@ -134,12 +134,12 @@ class UserController extends Controller
         }
         // if($refcount  != null) {
         //     $count =  $count + 15;
-        // } 
+        // }
         if($filecount  != null) {
             $count =  $count + 15;
         }
 
-        
+
         // $count = abs($count + ($expcount ?? '' + $educount ?? '' + $langcount ?? '' ) -  $x);
         }
 
@@ -171,7 +171,7 @@ class UserController extends Controller
                 'university' => 'required',
                 'special_id' => 'required'
             ]);
-            
+
 
             $edu = Education::create([
                 'user_id' => $request->user_id,
@@ -194,36 +194,36 @@ class UserController extends Controller
              }
 
                 break;
-                
+
          case 'lang':
              $request->validate([
                 'language' => 'required',
                 'language_level' => 'required',
                 ]);
-        
+
                 $lang =  Language::create([
-                    
+
                     'user_id' => \Auth::user()->id,
                     'language'=>$request->language,
                     'ar_language' => $request->ar_language,
                     'language_level' => $request->language_level,
                     'ar_language_level' => $this->language_level[$request->language_level],
-                    
+
                 ]);
-                
-                
-                
-                
+
+
+
+
                 if($request->has('language') && $request->language !='') {
                     $lang->language = $request->language;
                     $lang->ar_language = $request->ar_language;
                 }
-        
+
                 if($request->has('language_level') && $request->language_level !='' ) {
                     $lang->language_level = $request->language_level;
                     $lang->ar_language_level = $this->language_level[$request->language_level];
                 }
-                
+
                 if($lang->save()){
                 if(app()->getLocale() == 'ar') {
                     \Session::flash('success' , 'تم الحفظ بنجاح');
@@ -232,16 +232,16 @@ class UserController extends Controller
                  }
                  return redirect()->route('web.mycv',app()->getLocale());
             }
-                    
+
                 break;
-                
+
                 case 'attch':
                     $request->validate([
                         'ar_name'=>'required',
                         'name'=> 'required',
                         'attch' => 'required'
                         ]);
-                        
+
                         $file= new File();
                         $file->user_id = $request->user_id;
                         $file->ar_name = $request->ar_name;
@@ -250,36 +250,36 @@ class UserController extends Controller
                         $f = time().'.'.$request->file('attch')->getClientOriginalExtension();
                         $file->attch = $request->file('attch')->storeAs('public/attchment' , $f);
                         }
-                        
+
                         if($file->save()){
                             \Session::flash('success', app()->getLocale() == 'ar' ? 'تمت الاضافه بنجاح':'Add successflly');
                             return redirect()->route('web.mycv',app()->getLocale());
                         }
                     break;
-                    
+
                     case 'ref':
                     $request->validate([
                         'ar_name'=>'required',
                         'name'=> 'required',
                         'phone' => 'required',
                         'email' => 'required|email',
-                        
+
                         ]);
-                        
+
                         $ref= new Reference();
                         $ref->user_id = $request->user_id;
                         $ref->ar_name = $request->ar_name;
                         $ref->name = $request->name;
                         $ref->phone = $request->phone;
                         $ref->email = $request->email;
-                        
-                        
+
+
                         if($ref->save()){
                             \Session::flash('success', app()->getLocale() == 'ar' ? 'تمت الاضافه بنجاح':'Add successflly');
                             return redirect()->route('web.mycv',app()->getLocale());
                         }
                     break;
-            
+
           default:
                 $request->validate([
                     'role_id' => 'required',
@@ -293,7 +293,7 @@ class UserController extends Controller
                     'end_month' => 'required|int',
                     'company_name' => 'required'
                 ]);
-    
+
              $expert = new Exp();
              $expert->user_id = Auth::user()->id;
              if($request->hasFile('cert_pdf')) {
@@ -323,12 +323,12 @@ class UserController extends Controller
             if($request->has('end_month')){
                 $expert->end_month = $request->end_month;
             }
-            
+
             $expert->country_id = $request->country_id;
             $expert->role_id = $request->role_id;
             $expert->level = $request->level;
             $expert->sub_special_id = $request->sub_special_id;
-            
+
         if($expert->save()) {
             if(app()->getLocale() == 'ar') {
                \Session::flash('success' , 'تم الحفظ بنجاح');
@@ -342,8 +342,8 @@ class UserController extends Controller
 
 
     }
-   
-    public function edit($locale , $id)
+
+    public function edit($id)
     {
         $education = Education::findOrFail($id);
         $sub_specials = SubSpecial::all();
@@ -352,9 +352,8 @@ class UserController extends Controller
         return view('dashboard.users.education_edit', compact(['education','id','sub_specials','specials']));
     }
 
-    public function exp_edit($id , $locale)
+    public function exp_edit($id)
     {
-        $id = $locale;
            $expert = Exp::findOrFail($id);
            $cities = City::all();
             $sub_specials = SubSpecial::all();
@@ -365,22 +364,22 @@ class UserController extends Controller
 
         return view('dashboard.users.experiense_edit', compact('expert','id' , 'cities','countries','sub_specials','levels','roles','specials'));
     }
-    
-    public function lang_edit($locale , $id)
+
+    public function lang_edit($id)
     {
         $lang = Language::findOrFail($id);
 
         return view('dashboard.users.language_edit', compact('lang','id'));
     }
-    
-    public function attch_edit($locale , $id)
+
+    public function attch_edit($id)
     {
         $attch = File::findOrFail($id);
 
         return view('dashboard.users.attch_edit', compact('attch','id'));
     }
-    
-    public function ref_edit($locale , $id)
+
+    public function ref_edit($id)
     {
         $ref = Reference::findOrFail($id);
 
@@ -388,7 +387,7 @@ class UserController extends Controller
     }
 
 
-   
+
     public function update(Request $request, $id)
     {
 
@@ -436,7 +435,7 @@ class UserController extends Controller
         if($request->has('level')) {
             $expert->level = $request->level;
          }
-        
+
 
          if($request->has('country_id')){
              $expert->country_id = $request->country_id;
@@ -447,7 +446,7 @@ class UserController extends Controller
          if($request->has('sub_special_id')){
              $expert->sub_special_id = $request->sub_special_id;
          }
-    
+
          //end experince
     if($expert->save()) {
        if(app()->getLocale() == 'ar') {
@@ -458,7 +457,7 @@ class UserController extends Controller
     }
 }
 
-    
+
 
     if($request->select == 'edu_form') {
 
@@ -467,7 +466,7 @@ class UserController extends Controller
     if($request->has('qualification') && $request->qualification !='') {
         $edu->qualification = $request->qualification;
         $edu->ar_qualification = $this->qualification[$request->qualification];
-    } 
+    }
     if($request->has('university')) {
         $edu->university = $request->university;
     }
@@ -483,7 +482,7 @@ class UserController extends Controller
     if($request->has('grade')) {
         $edu->grade = $request->grade;
     }
-    
+
         if($request->has('special_id')){
             $edu->special_id = $request->sub_special;
         }
@@ -496,11 +495,11 @@ class UserController extends Controller
          }
     }
     }
-    
+
     if($request->select == 'lang') {
-        
+
         $lang = Language::findOrFail($id);
-        
+
         if($request->has('language') && $request->language !='') {
             $lang->language = $request->language;
             $lang->ar_language = $this->language[$request->language];
@@ -510,7 +509,7 @@ class UserController extends Controller
             $lang->language_level = $request->language_level;
             $lang->ar_language_level = $this->language_level[$request->language_level];
         }
-        
+
         if($lang->save()){
         if(app()->getLocale() == 'ar') {
             \Session::flash('success' , 'تم الحفظ بنجاح');
@@ -518,8 +517,8 @@ class UserController extends Controller
           \Session::flash('success' , ' Data saved successfully');
          }
     }
-        
-        
+
+
     }
 
 
@@ -536,16 +535,16 @@ class UserController extends Controller
          $f = time().'.'.$request->attch->getClientOriginalExtension();
         $file->attch = $request->file('attch')->storeAs('public/attchment' , $f);
         }
-        
+
          if($file->save()){
             \Session::flash('success', app()->getLocale() == 'ar' ? 'تمت التعديل بنجاح':'Edit successflly');
             return redirect()->route('web.mycv');
         }
-        
+
     }
-    
+
     if($request->select == "ref") {
-        
+
         $ref = Reference::findOrFail($id);
         if($request->has('ar_name')) {
         $ref->ar_name = $request->ar_name;
@@ -559,17 +558,17 @@ class UserController extends Controller
         if($request->has('email') && $user->email != $request->email){
         $ref->email = $request->email;
         }
-        
+
          if($ref->save()){
             \Session::flash('success', app()->getLocale() == 'ar' ? 'تمت التعديل بنجاح':'Edit successflly');
             return redirect()->route('web.mycv');
         }
-        
+
     }
 
     if($request->select == "user_edit") {
        $user = User::findOrFail($id);
-    
+
 
         if($request->has('email') && $user->email != $request->email){
             $user->email = $request->email;
@@ -614,7 +613,7 @@ class UserController extends Controller
             $user->ar_social_status = $this->social_status[$request->social_status];
         }
         //Eduction info
-     
+
 
         if($request->has('brithDate')) {
             $user->birthdate = $request->brithDate;
@@ -648,8 +647,8 @@ class UserController extends Controller
         }
         if($request->has('special_id')){
             $user->special_id = $request->special_id;
-        } 
-        
+        }
+
         if($request->has('level')) {
            $user->level = $request->level;
         }
@@ -664,7 +663,7 @@ class UserController extends Controller
         return redirect()->route('web.mycv');
 }
 
-    public function destroy(Request $request , $locale , $id)
+    public function destroy(Request $request , $id)
     {
         // return $id;
         switch($request->select) {
@@ -688,14 +687,14 @@ class UserController extends Controller
                  \Session::flash('success' , app()->getLocale() == 'ar' ? 'تم الحذف بنجاح': 'Deleted successfully');
                  return redirect()->route('web.mycv');
                  break;
-                 
+
             case 'lang':
                  $lang = Language::findOrFail($id);
                  $lang->delete();
                  \Session::flash('success' , app()->getLocale() == 'ar' ? 'تم الحذف بنجاح': 'Deleted successfully');
                  return redirect()->route('web.mycv');
                  break;
-                 
+
             case 'edu':
                  $edu = Education::findOrFail($id);
                  $edu->delete();
@@ -705,18 +704,18 @@ class UserController extends Controller
         }
     }
 
-    public function apply($local , $id)
+    public function apply( $id)
     {
        $job = Job::findOrFail($id);
         $admins = Admin::all();
         \Notification::send($admins , new ApllyJob(Auth::user() , $job));
-        
+
         \Session::flash('success' , 'Accepted');
         return redirect()->route('users.index' , app()->getLocale());
 
     }
 
-    //helper 
+    //helper
 
     public function pcount($table ,$model ,$resource)
     {
@@ -730,7 +729,7 @@ class UserController extends Controller
     }
 
 
-    public function pdf( $locale , $id) {
+    public function pdf($id) {
         $user = User::findOrFail($id);
         $expert = Exp::where('user_id', $user->id)->first();
         $user->load(['exps','educations' , 'languages' , 'files','references','country','city','special','role']);
@@ -738,21 +737,21 @@ class UserController extends Controller
         return view('dashboard.users.pdf' , compact(['user', 'expert']));
 
     }
-    
+
     public function guid() {
-        
+
         $guid = Guid::latest()->first();
         return view('dashboard.users.guid' , compact('guid'));
 
     }
-    
+
     public function download (Request $request , $id)
     {
-      
+
      if(\Auth::user()->id == $id) {
-         
+
          return \Storage::download($request->f);
-     } 
+     }
      else {
          \Session::flash('error' , app()->getLocale() == 'ar' ? 'ليس لديك صلاحيه كافيه':'Access deny');
          return back();

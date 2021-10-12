@@ -15,8 +15,8 @@ use App\Special;
 use App\Princing;
 use App\SubSpecial;
 use Illuminate\Http\Request;
-use App\Notifications\CvRequest; 
-use App\Notifications\JobAccept; 
+use App\Notifications\CvRequest;
+use App\Notifications\JobAccept;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -33,13 +33,13 @@ class OwnerController extends Controller
         'Male' => 'ذكر',
         'Female' => 'انثى'
     ];
-    
+
     public function __construct()
     {
-        
+
         $this->middleware(['auth:owner'])->except('jobOwner');
     }
-    
+
     public function index()
     {
         $users = User::where('owner_id', Auth::user()->id)->latest()->take(4)->get();
@@ -104,13 +104,13 @@ class OwnerController extends Controller
             'city_id' => 'required',
             'status' => 'required',
             'special_id' => 'required',
-            
+
         ]);
-            
+
             $admins = Admin::all();
             $sender = Auth::user();
             Notification::send($admins , new JobAccept($request , $sender));
-    
+
             \Session::flash('success' , 'تم ارسال طلبك بنجاح وسوف يتم الرد عليك');
             return redirect()->route('owners.index' , app()->getLocale());
 
@@ -124,7 +124,7 @@ class OwnerController extends Controller
      */
     public function show($id)
     {
-        
+
     }
 
     public function setting($locale , $id)
@@ -138,7 +138,7 @@ class OwnerController extends Controller
         $specials = Special::all();
         $owner->load('jobs');
 
-        return view('dashboard.owners.edit_job', 
+        return view('dashboard.owners.edit_job',
          compact(['owner','levels','specials' , 'roles' , 'sub_specials' , 'countries' , 'cities','id']));
     }
 
@@ -160,7 +160,7 @@ class OwnerController extends Controller
         $specials = Special::all();
         $owner->load('jobs');
 
-        return view('dashboard.owners.edit_owner' , 
+        return view('dashboard.owners.edit_owner' ,
          compact(['owner','levels','specials' , 'roles' , 'sub_specials' , 'countries' , 'cities', 'id']));
     }
 
@@ -171,10 +171,10 @@ class OwnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $local ,  $id)
+    public function update(Request $request ,  $id)
     {
     //    return $request->ar_last_name;
-        
+
         switch ($request->select) {
             case 'account':
                $owner =  Owner::findOrFail($id);
@@ -205,7 +205,7 @@ class OwnerController extends Controller
                     ]);
 
                     $owner->password = \Hash::make($request->password);
-                
+
                 }
 
                 if($owner->save()) {
@@ -217,42 +217,42 @@ class OwnerController extends Controller
                     }
                 break;
             case 'company':
-           
+
                 $owner = Owner::findOrFail($id);
-        
+
                 if($request->has('company_name')) {
                     $owner->company_name = $request->company_name;
                 }
-        
+
                 if($request->has('company_email')) {
                     $owner->company_email = $request->company_email;
                 }
-        
+
                 if($request->has('role_id')) {
                     $owner->role_id = $request->role_id;
                 }
-        
+
                 if($request->has('country_id')) {
                     $owner->country_id = $request->country_id;
                 }
-        
+
                 if($request->has('city_id')) {
                     $owner->city_id = $request->city_id;
                 }
-        
+
                 if($request->has('company_logo')) {
                     \Storage::delete($owner->logo);
                     $owner->logo = $request->company_logo->store('public/company_logo');
                 }
-        
+
                 if($request->has('ar_description')) {
                     $owner->ar_description = $request->ar_description;
                 }
-        
+
                 if($request->has('description')) {
                     $owner->description = $request->description;
                 }
-        
+
                 if($owner->save()) {
                 \Session::flash('success' , 'Data saved successfully');
                 return redirect()->route('owners.index' , app()->getLocale());
@@ -301,7 +301,7 @@ class OwnerController extends Controller
                 }
                 break;
         }
-        
+
     }
 
     /**
@@ -317,9 +317,9 @@ class OwnerController extends Controller
                 $job = Job::findOrFail($id);
                 $job->delete();
                 return back();
-                
+
                 break;
-            
+
             default:
                 # code...
                 break;
@@ -328,7 +328,7 @@ class OwnerController extends Controller
     }
 
     public function notify( $local , $id )
-    {   
+    {
         $user = User::findOrfail($id);
         $admins = Admin::all();
         $sender = Auth::user();
@@ -351,8 +351,8 @@ class OwnerController extends Controller
 
             $orUsers = Exp::where('special_id',$special->id)
                      ->where('country_id',$country->id)->get();
-                     
-            $orUsers->load('user');      
+
+            $orUsers->load('user');
             $users->load('exps','educations');
             return view('pages.ar_cvrequest', compact(['users','orUsers']));
         } else {
@@ -364,7 +364,7 @@ class OwnerController extends Controller
 
             $orUsers = Exp::where('special_id',$special->id)
                      ->where('country_id',$country->id)->get();
-            $orUsers->load('user');      
+            $orUsers->load('user');
             $users->load('exps','educations');
             return view('pages.cvrequest', compact(['users','orUsers']));
         }
@@ -373,15 +373,15 @@ class OwnerController extends Controller
             return back();
         }
     }
-    
+
     public function endCv($locale , $id)
     {
        $user = User::findOrFail($id);
        $user->owner_id = null;
        $user->save();
-       
+
        return back();
     }
-    
-    
+
+
 }

@@ -45,7 +45,7 @@ class BrowseController extends Controller
         return view('pages.home',compact(['countries','sub_specials','owners','roles','jobs','specials' , 'cities' , 'partner','advs','news']));
     }
 
-    public function jobSingle($locale , $id)
+    public function jobSingle($id)
     {
         $job = Job::findOrFail($id);
         $about = About::latest()->take(1)->first();
@@ -55,7 +55,7 @@ class BrowseController extends Controller
 
     public function contact()
     {
-        $about = About::latest()->take(1)->first(); 
+        $about = About::latest()->take(1)->first();
 
         return view('pages.contact',compact('about'));
     }
@@ -72,7 +72,7 @@ class BrowseController extends Controller
             $city = SubSpecial::where('name',$request->special)->first();
         }
 
-        
+
         $jobs = Job::where('city_id' , $city->id ?? '' )->where('selected' ,0)
           ->where('sub_special_id' , $sub_special->id ?? '')->get();
 
@@ -86,13 +86,13 @@ class BrowseController extends Controller
             $jobs->load('owner');
             $one = $request->country;
             $tow = $request->special;
-            
-            
-            
+
+
+
              return view(app()->getLocale() == 'en' ? 'pages.searchjob' : 'pages.ar_searchjob' ,compact(['Ijobs','jobs' , 'one' , 'tow' , 'all']));
-        
+
     }
-    
+
     public function contactSend(Request $request) {
         $request->validate([
             'full_name' => 'required',
@@ -101,13 +101,13 @@ class BrowseController extends Controller
             'message' => 'required',
             'subject' => 'required'
             ]);
-            
+
             Notification::route('mail', 'Gw_sd@yahoo.co.uk')  //Gw_sd@yahoo.co.uk
              ->notify(new ContactNotification($request));
-             
+
              \Session::flash('success',app()->getLocale() == 'ar' ? 'شكرا لك للتواصل معنا' : 'Thank you for cancat with us');
              return redirect()->route('web.contact' , app()->getLocale());
-    } 
+    }
 
     public function category()
     {
@@ -136,35 +136,35 @@ class BrowseController extends Controller
         $advs = Adv::latest()->get();
         return view('pages.jobs' , compact(['jobs','advs']));
     }
-    
+
     public function showAbout()
     {
-        
+
         $about = About::latest()->first();
         $about->load('employees');
         return view('pages.about' , compact('about'));
     }
-    
-    public function by_role($locale , $id) {
+
+    public function by_role($id) {
         $role = Role::findOrFail($id);
         $jobs = Job::where('role_id', $role->id)->where('selected',0)->get();
-        
+
         return view('pages.by_role',compact(['jobs','id']));
     }
-    
-    
+
+
     public function download (Request $request , $id)
     {
-      
+
      if(\Auth::user()->id == $id) {
-         
+
          return \Storage::download($request->f);
-     } 
+     }
      else {
          \Session::flash('error' , app()->getLocale() == 'ar' ? 'ليس لديك صلاحيه كافيه':'Access deny');
          return back();
      }
   }
-    
+
 
 }
