@@ -8,7 +8,7 @@
 <title> {{ config('app.name' )}} </title>
 @else
 <title> {{ config('app.name' )}} </title>
-@endif 
+@endif
 <link rel="icon" type="image/x-icon" href="{{asset('asset/images/logo.png')}}" />
 
 <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Work+Sans:300,400,700" rel="stylesheet">
@@ -21,9 +21,9 @@
 <link rel="stylesheet" href=" {{asset('asset/css/owl.theme.default.min.css')}} ">
 <link rel="stylesheet" href=" {{asset('asset/css/bootstrap-datepicker.css')}} ">
 <link rel="stylesheet" href=" {{asset('asset/css/animate.css')}} ">
- 
+
 <link href="{{asset('vendor/css/toastr-rtl.min.css')}}" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href=" {{asset('asset/css/fontawesome.min.css')}} ">  
+<link rel="stylesheet" href=" {{asset('asset/css/fontawesome.min.css')}} ">
 <link rel="stylesheet" href=" {{asset('asset/fonts/flaticon/font/flaticon.css')}} ">
 
 <link rel="stylesheet" href=" {{asset('asset/css/aos.css')}} ">
@@ -34,3 +34,4 @@
 @endif
 
 <link rel="stylesheet" href=" {{asset('asset/css/scrolling.css')}} ">
+{{-- <link rel="stylesheet" href=" {{asset('css/app.css')}} "> --}}

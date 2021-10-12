@@ -7,8 +7,8 @@
     @yield('stylesheet')
 
 </head>
-<body>
-   
+<body class="">
+
     <div class="site-wrap">
         <div class="site-mobile-menu">
             <div class="site-mobile-menu-header">
@@ -21,13 +21,13 @@
  @include('_include.user_navbar')
 
     @yield('content')
-   
- 
 
-@include('_include.footer') 
 
-   
-@include('_include.jsfile') 
+
+@include('_include.footer')
+
+
+@include('_include.jsfile')
 @yield('scripts')
 @include('_include.message')
 <script src="{{asset('vendor/unisharp/laravel-ckeditor/ckeditor.js')}}"></script>
@@ -39,6 +39,6 @@
         CKEDITOR.config.extraPlugins = 'bidi';
 
     </script>
-</div> 
+</div>
 </body>
 </html>

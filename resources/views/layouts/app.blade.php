@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,87 +9,23 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Styles --> 
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Styles -->
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    @yield('head')
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', __('AmwagJobs')) }}
-                </a> 
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body class="bg-primary-lightest h-screen antialiased">
+    <div id="app" v-cloak>
+        @include('layouts.nav')
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <!--<ul class="navbar-nav mr-auto">-->
-                    <!--    @foreach (config('app.available_locales') as $locale)-->
-                    <!--    <li class="nav-item">-->
-                    <!--        <a class="nav-link"-->
-                               {{-- href="{{ route(\Illuminate\Support\Facades\Route::currentRouteName(), $locale) }}" --}}
-                    <!--            @if (app()->getLocale() == $locale) style="font-weight: bold; text-decoration: underline" @endif>{{ strtoupper($locale) }}</a>-->
-                    <!--    </li>-->
-                    <!--@endforeach-->
-                    <!--</ul>-->
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                Guest
-                            </li>
-                            
-                        @else
-                        @if(Auth::guard('web')->check())
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('users.logout',app()->getLocale()) }}">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <!--<form id="logout-form" action="{{ route('logout',app()->getLocale()) }}" method="POST" style="display: none;">-->
-                                    <!--    @csrf-->
-                                    <!--</form>-->
-                                </div>
-                            </li>
-                            @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('owners.logout',app()->getLocale()) }}">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                </div>
-                            </li>
-                            @endif
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <main class="py-4">
+        <div class="container flex mx-auto justify-center pb-24">
             @yield('content')
-        </main>
+        </div>
+
+        <flash message="{{ session('flash.message') }}" baselevel="{{ session('flash.level') }}"></flash>
     </div>
+
+    <!-- Scripts -->
+    <script src="{{ mix('js/app.js') }}"></script>
+    @yield('scripts')
 </body>
 </html>
