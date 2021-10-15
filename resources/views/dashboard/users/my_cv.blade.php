@@ -24,7 +24,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-12 top2 pt-5">
                     <div class="bg-white rounded shadow">
                         <div class="text-center">
-                            <img src="{{ asset(Storage::url($user->avatar)) }} " class="rounded-circle p-2" alt="Image"
+                            <img src="{{ $user->avatar ? asset(Storage::url($user->avatar)) : asset('asset/images/noImage.png') }} " class="rounded-circle p-2" alt="Image"
                                 style="width:159px; height:159px">
                             <img src=" {{ asset('asset/images/edit.png') }} " data-toggle="modal" data-target="#editimage"
                                 alt="" class="cursor-pointer edit-img" width="4.5%" height="2.5%">
@@ -32,7 +32,7 @@
                         <ul>
                             <li class="d-md-flex d-block">
                                 <h5 class="py-2 px-4 font-weight-bold">
-                                    {{ app()->getLocale() == 'ar' ? $user->ar_name . ' ' . $user->ar_last_name : $user->name . ' ' . $user->last_name }}
+                                    {{ $user->name . ' ' . ' ' . $user->last_name }}
                                 </h5>
                             </li>
                         </ul>
@@ -40,7 +40,7 @@
                             <tr>
                                 <th width="25%">{{ __('Country') }} </th>
                                 <td>
-                                  {{ app()->getLocale() == 'ar' ? $user->country->ar_name ?? "" . '-' . $user->city->ar_name ?? "" : $user->country->name ?? "" . ' - ' . $user->city->name ?? "" }}
+                                    {{ app()->getLocale() == 'ar' ? $user->country->ar_name ?? ('' . '-' . $user->city->ar_name ?? '') : $user->country->name ?? ('' . ' - ' . $user->city->name ?? '') }}
                                 </td>
                             </tr>
 
@@ -52,7 +52,7 @@
                                         @foreach ($user->educations as $key => $education)
                                             @if ($user->educations->contains($education))
                                                 <br> {{ $key + 1 }} -
-                                                {{ app()->getLocale() == 'ar' ? $education->ar_qualification . ' - ' . $education['special']['ar_name'] ?? '' : $education->qualification . ' - ' . $education['special']['name'] ?? '' }}
+                                                {{ $education->qualification . ' - ' . $education['special']['name'] ?? '' }}
                                             @endif
                                         @endforeach
                                         {{-- @foreach ($user->educations as $education) {{$education['sub_special']['ar_name']}} @endforeach --}}
@@ -75,13 +75,13 @@
                             </tr>
                         </table>
                         <div class="text-center p-3">
-                            <a href="{{ route('pdf.download', $user->id) }}"
-                                id="download-attachment"
+                            <a href="{{ route('pdf.download', $user->id) }}" id="download-attachment"
                                 class="btn btn-outline-primary px-3  font-weight-bold">{{ __('Save as PDF') }} </a>
                         </div>
                         <div class="p-3">
                             <hr>
-                            <p><span class="text-muted"> {{ __('Last updated CV:') }} </span> {{ $user->updated_at }}</p>
+                            <p><span class="text-muted"> {{ __('Last updated CV:') }} </span>
+                                {{ $user->updated_at }}</p>
                         </div>
                     </div>
                 </div>
@@ -95,7 +95,8 @@
                                     class="{{ number_format($count, '0', '.', '') >= 80 ? 'text-success' : 'text-danger' }} display-4">{{ number_format($count, '0', '.', '') }}%</span>
                             </div>
                             <p class="align-self-center">
-                                {{ __('Complete your CV by 80% to be the highlights 10% of the most visible users') }}</p>
+                                {{ __('Complete your CV by 80% to be the highlights 10% of the most visible users') }}
+                            </p>
                         </div>
 
                         <!--------------- user info // cv info ----------------->
@@ -111,11 +112,11 @@
                                     <table class="table table-borderless">
                                         <tr>
                                             <th scope="col">{{ __('First Name') }}</th>
-                                            <td>{{ app()->getLocale() == 'ar' ? $user->ar_name : $user->name }}</td>
+                                            <td>{{ $user->name }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="col">{{ __('Last Name') }}</th>
-                                            <td>{{ app()->getLocale() == 'ar' ? $user->ar_last_name : $user->last_name }}
+                                            <td>{{ $user->last_name }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -132,7 +133,7 @@
                                         </tr>
                                         <tr>
                                             <th scope="col">{{ __('Place of Birth') }}</th>
-                                            <td>{{ app()->getLocale() == 'ar' ? $user->ar_brith : $user->brith }}</td>
+                                            <td>{{ $user->brith }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="col">{{ __('Birth Date') }}</th>
@@ -155,7 +156,7 @@
                                         </tr>
                                         <tr>
                                             <th scope="col"> {{ __('Religion') }} </th>
-                                            <td>{{ app()->getLocale() == 'ar' ? $user->ar_religion : $user->religion }}
+                                            <td>{{ $user->religion }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -212,7 +213,8 @@
                                                             <th scope="col"> {{ __('Qualification') }} </th>
                                                             <td> <span>{{ $education['special']['ar_name'] ?? '' }}</span>
                                                                 - <span>{{ $user->role->ar_name }}</span> -
-                                                                <span>{{ $education->ar_qualification }}</span></td>
+                                                                <span>{{ $education->ar_qualification }}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <th scope="col">{{ __('University') }}</th>
@@ -221,7 +223,8 @@
                                                         <tr>
                                                             <th scope="col">{{ __('Area') }}</th>
                                                             <td><span>{{ $user->country->ar_name }}</span>-
-                                                                <span>{{ $user->city->ar_name }}</span></td>
+                                                                <span>{{ $user->city->ar_name }}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <th scope="col">{{ __('Graduation Date') }}</th>
@@ -233,11 +236,11 @@
                                                         </tr>
                                                     </table>
                                                     <a
-                                                        href="{{ route('users.edit', [app()->getLocale(), $education->id]) }}"><img
+                                                        href="{{ route('educations.edit',$education->id) }}"><img
                                                             src=" {{ asset('asset/images/edit.png') }} " alt=""
                                                             class="p-1 align-left float-left   cursor-pointer"></a>
                                                     <form
-                                                        action="{{ route('users.destroy', [app()->getLocale(), $education->id]) }}"
+                                                        action="{{ route('educations.destroy',$education->id) }}"
                                                         method='post'>
                                                         @csrf
                                                         @method('DELETE')
@@ -256,7 +259,8 @@
                                                             <th scope="col"> {{ __('Qualification') }} </th>
                                                             <td><span>{{ $user->role->name }}</span> -
                                                                 <span>{{ $education['special']['name'] ?? '' }}</span> -
-                                                                <span>{{ $education->qualification }}</span></td>
+                                                                <span>{{ $education->qualification }}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <th scope="col">{{ __('University Of') }}</th>
@@ -276,11 +280,11 @@
                                                         </tr>
                                                     </table>
                                                     <a
-                                                        href="{{ route('users.edit', [app()->getLocale(), $education->id]) }}"><img
+                                                        href="{{ route('educations.edit',$education->id) }}"><img
                                                             src=" {{ asset('asset/images/edit.png') }} " alt=""
                                                             class="p-1 align-left float-left   cursor-pointer"></a>
                                                     <form
-                                                        action="{{ route('users.destroy', [app()->getLocale(), $education->id]) }}"
+                                                        action="{{ route('educations.destroy', $education->id) }}"
                                                         method='post'>
                                                         @csrf
                                                         @method('DELETE')
@@ -310,36 +314,6 @@
                                 </div>
                                 <div class="">
                                     @foreach ($user->languages as $lang)
-
-                                        @if (app()->getLocale() == 'ar')
-
-                                            <div class="card-body d-flex justify-content-between">
-                                                <table class="table table-borderless">
-                                                    <tr>
-                                                        <th scope="col"> {{ __('Language') }} </th>
-                                                        <td>{{ $lang->ar_language }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="col"> {{ __('Language Level') }} </th>
-                                                        <td>{{ $lang->ar_language_level }} </td>
-                                                    </tr>
-
-                                                </table>
-                                                <a href=" {{ route('lang.edit', [app()->getLocale(), $lang->id]) }} "><img
-                                                        src=" {{ asset('asset/images/edit.png') }} " alt=""
-                                                        class="p-1 align-left float-left   cursor-pointer"></a>
-                                                <form
-                                                    action="{{ route('users.destroy', [app()->getLocale(), $lang->id]) }}"
-                                                    method='post'>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <input type="hidden" name="select" value="lang">
-                                                    <button type="submit" class="delete"><img
-                                                            src=" {{ asset('asset/images/cross.png') }} " alt=""
-                                                            class="p-1 align-left float-left   cursor-pointer"></button>
-                                                </form>
-                                            </div>
-                                        @else
                                             <div class="card-body d-flex justify-content-between">
                                                 <table class="table table-borderless">
                                                     <tr>
@@ -352,11 +326,11 @@
                                                     </tr>
 
                                                 </table>
-                                                <a href=" {{ route('lang.edit', [app()->getLocale(), $lang->id]) }} "><img
+                                                <a href=" {{ route('languages.edit',  $lang->id) }} "><img
                                                         src=" {{ asset('asset/images/edit.png') }} " alt=""
                                                         class="p-1 align-left float-left   cursor-pointer"></a>
                                                 <form
-                                                    action="{{ route('users.destroy', [app()->getLocale(), $lang->id]) }}"
+                                                    action="{{ route('languages.destroy', $lang->id) }}"
                                                     method='post'>
                                                     @csrf
                                                     @method('DELETE')
@@ -367,7 +341,7 @@
                                                 </form>
 
                                             </div>
-                                        @endif
+
                                     @endforeach
 
                                 </div>
@@ -396,7 +370,8 @@
                                                             <td><span>{{ $expert->end_year - $expert->start_year }}
                                                                     {{ __('Year') }}</span> &
                                                                 <span>{{ abs($expert->end_month - $expert->start_month) }}
-                                                                    {{ __('Month') }}</span> </td>
+                                                                    {{ __('Month') }}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <th scope="col">{{ __('Job Level') }}</th>
@@ -405,12 +380,14 @@
                                                         <tr>
                                                             <th scope="col">{{ __('Inistitute') }} </th>
                                                             <td><span>{{ $expert->company_name }}</span> -
-                                                                <span>{{ $user->country->ar_name }}</span></td>
+                                                                <span>{{ $user->country->ar_name }}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <th scope="col">{{ __('Description') }}</th>
                                                             <td>
-                                                                <p></p>{{ Str::limit($expert->ar_summary, $limit = 40) }}
+                                                                <p></p>
+                                                                {{ Str::limit($expert->ar_summary, $limit = 40) }}
                                                                 <p></p>
                                                             </td>
                                                         </tr>
@@ -454,7 +431,8 @@
                                                             <td><span>{{ $expert->end_year - $expert->start_year }}
                                                                     {{ __('Years') }}</span> &
                                                                 <span>{{ abs($expert->end_month - $expert->start_month) }}
-                                                                </span> </td>
+                                                                </span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <th scope="col"> {{ __('Job Level') }} </th>
@@ -463,7 +441,8 @@
                                                         <tr>
                                                             <th scope="col">{{ __('Inistitute') }} </th>
                                                             <td><span>{{ $user->country->name }}</span>-
-                                                                <span>{{ $expert->company_name }}</span></td>
+                                                                <span>{{ $expert->company_name }}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <th scope="col">{{ __('Description') }}</th>
@@ -478,8 +457,9 @@
                                                                     @csrf
                                                                     <input type="hidden" name='f'
                                                                         value="{{ $expert->expert_pdf }}">
-                                                                    <button class="delete m-btn"> <i class="fa fa-download"
-                                                                            aria-hidden="true"></i> Download </button>
+                                                                    <button class="delete m-btn"> <i
+                                                                            class="fa fa-download" aria-hidden="true"></i>
+                                                                        Download </button>
                                                                 </form>
                                                             </td>
                                                         </tr>
@@ -603,8 +583,9 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="hidden" name="select" value="ref">
-                                                <button class="delete"><img src=" {{ asset('asset/images/cross.png') }} "
-                                                        alt="" class="p-1 align-left float-left   cursor-pointer"></button>
+                                                <button class="delete"><img
+                                                        src=" {{ asset('asset/images/cross.png') }} " alt=""
+                                                        class="p-1 align-left float-left   cursor-pointer"></button>
                                             </form>
                                         </div>
                                     @endforeach
@@ -697,7 +678,8 @@
                                     placeholder="{{ __('Enter Name') }}">
                             </div>
                             <div class="form-group  col-md-6">
-                                <label for="password-confirm" class=""> {{ __('Name by English') }} </label>
+                                <label for="password-confirm" class=""> {{ __('Name by English') }}
+                                </label>
                                 <input id="password-confirm" type="text" class="form-control" name="name"
                                     autocomplete="new-password" placeholder="{{ __('Enter Name') }}">
                             </div>
@@ -734,7 +716,7 @@
                     <div class="row justify-content-center">
 
                         <form class="form-horizontal form-row" id="user-form" role="form" method="POST"
-                            action="{{ route('users.store', app()->getLocale()) }}" enctype="multipart/form-data"
+                            action="{{ route('languages.store') }}" enctype="multipart/form-data"
                             autocomplete="off">
                             @csrf
                             <input type="hidden" name="user_id" value="{{ $user->id }}">
@@ -796,8 +778,7 @@
                 </div>
                 <div class="modal-body p-4" id="result">
                     <div class="row justify-content-center">
-                        <form class="form-row col-md-6"
-                            action="{{ route('users.update', $user->id) }}" method="POST"
+                        <form class="form-row col-md-6" action="{{ route('users.update', $user->id) }}" method="POST"
                             enctype="multipart/form-data" autocomplete="off">
                             @csrf
                             @method('PUT')
@@ -833,7 +814,7 @@
                 <div class="modal-body p-4" id="result">
                     <div class="row justify-content-center">
                         <form method="POST" class="form-row col-md-6"
-                            action="{{ route('users.store', app()->getLocale()) }}" enctype="multipart/form-data"
+                            action="{{ route('educations.store') }}" enctype="multipart/form-data"
                             autocomplete="off">
                             @csrf
                             <input type="hidden" name="user_id" value="{{ $user->id }}">
@@ -891,7 +872,8 @@
     <!-- end education model -->
 
     <!-- change password model -->
-    <div class="modal fade" id="changepassword" style="padding-right: 0;" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="changepassword" style="padding-right: 0;" tabindex="-1" role="dialog"
+        aria-hidden="true">
         <div class="modal-dialog modal-full" role="document">
             <div class="modal-content fill-cont">
                 <div class="modal-header">
@@ -914,7 +896,8 @@
                                     placeholder="{{ __('Password') }}">
                             </div>
                             <div class="form-group  col-md-6">
-                                <label for="password-confirm" class=""> {{ __('Confirm Password') }} </label>
+                                <label for="password-confirm" class=""> {{ __('Confirm Password') }}
+                                </label>
                                 <input id="password-confirm" type="password" class="form-control"
                                     name="password_confirmation" required autocomplete="new-password"
                                     placeholder="{{ __('Confirm Password') }}">
@@ -934,7 +917,8 @@
     <!-- end change password model -->
 
     <!-- add experience model -->
-    <div class="modal fade" id="addexperience" style="padding-right: 0;" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="addexperience" style="padding-right: 0;" tabindex="-1" role="dialog"
+        aria-hidden="true">
         <div class="modal-dialog modal-full" role="document">
             <div class="modal-content fill-cont" style="height: auto!important;">
                 <div class="modal-header">
@@ -972,7 +956,8 @@
 
                             <div class="form-group col-md-3">
                                 <label for="inputEmail4">{{ __('End month') }}</label>
-                                <input type="text" class="form-control" id="inputAddress2" placeholder="" name="end_month">
+                                <input type="text" class="form-control" id="inputAddress2" placeholder=""
+                                    name="end_month">
                             </div>
 
 
@@ -1056,7 +1041,7 @@
                 <div class="modal-body p-4" id="result">
                     <div class="row justify-content-center">
                         <form class="form-row col-md-6" method="POST"
-                            action="{{ route('users.update', [app()->getLocale(), $user->id]) }}" autocomplete="off">
+                            action="{{ route('users.update',$user->id) }}" autocomplete="off">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="select" value="user_edit">
@@ -1077,19 +1062,19 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="inputEmail4"> {{ __('Last Name by English') }} </label>
-                                <input type="text" class="form-control" name="last_name" value="{{ $user->last_name }}"
-                                    placeholder="...">
+                                <input type="text" class="form-control" name="last_name"
+                                    value="{{ $user->last_name }}" placeholder="...">
                             </div>
                             <div class="form-group col-md-6 pr-2">
                                 <label for="inputState"
                                     style="vertical-align:bottom; display: table; margin-bottom: 0.5rem;">{{ __('Gender') }}</label>
                                 <div class="form-check form-check-inline">
-                                    <input {{ $user->gender == 'Male' ? 'checked' : '' }} class="form-check-input"
+                                    <input {{ $user->gender == 'Male' || $user->gender == 'ذكر' ? 'checked' : '' }} class="form-check-input"
                                         type="radio" name="gender" id="inlineRadio1" value="Male">
                                     <label class="form-check-label" for="inlineRadio1">{{ __('Male') }}</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input {{ $user->gender == 'Female' ? 'checked' : '' }} class="form-check-input"
+                                    <input {{ $user->gender == 'Female' || $user->gender == 'أنثى' ? 'checked' : '' }} class="form-check-input"
                                         type="radio" name="gender" id="inlineRadio2" value="Female">
                                     <label class="form-check-label" for="inlineRadio2">{{ __('Female') }}</label>
                                 </div>
@@ -1160,7 +1145,7 @@
                                 <label for="inputState">{{ __('Religion') }}</label>
                                 <select id="inputState" class="form-control" name="religion">
                                     <option selected hidden value="{{ $user->religion }}">
-                                        {{ app()->getLocale() == 'ar' ? $user->ar_religion : $user->religion }}</option>
+                                        {{ $user->religion }}</option>
                                     <option value="Muslime">{{ __('Muslime') }}</option>
                                     <option value="Christian">{{ __('Christian') }}</option>
                                     <option value="Gushin">{{ __('Gushin') }}</option>
@@ -1218,7 +1203,7 @@
                 <div class="modal-body p-4" id="result">
                     <div class="row justify-content-center">
                         <form class="form-row col-md-6"
-                            action="{{ route('users.update', [app()->getLocale(), $user->id]) }}" method="post"
+                            action="{{ route('users.update', $user->id) }}" method="post"
                             autocomplete="off">
                             @csrf
                             @method('PUT')
@@ -1283,6 +1268,5 @@
         //       }
 
         //       });
-
     </script>
 @endsection

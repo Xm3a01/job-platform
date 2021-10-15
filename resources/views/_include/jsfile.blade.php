@@ -14,8 +14,8 @@
   <script src="{{asset('vendor/js/toastr.min.js')}}" type="text/javascript"></script>
   <script src="{{asset('vendor/js/ui-toastr.min.js')}}" type="text/javascript"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.0/jQuery.print.min.js"></script>
-  <script>
   <script src="{{asset('js/app.js')}}" type="text/javascript"></script>
+  <script>
     document.addEventListener('DOMContentLoaded', function () {
       var mediaElements = document.querySelectorAll('video, audio'),
         total = mediaElements.length;

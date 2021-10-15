@@ -161,79 +161,79 @@ class UserController extends Controller
     public function store(Request $request)
     {
         switch ($request->select) {
-          case 'add_edu':
-              $request->validate([
-                'user_id' => 'required',
-                'qualification' => 'required',
-                'grade_date' => 'required',
-                'grade' => 'required',
-                'ar_university' => 'required',
-                'university' => 'required',
-                'special_id' => 'required'
-            ]);
+        //   case 'add_edu':
+        //       $request->validate([
+        //         'user_id' => 'required',
+        //         'qualification' => 'required',
+        //         'grade_date' => 'required',
+        //         'grade' => 'required',
+        //         'ar_university' => 'required',
+        //         'university' => 'required',
+        //         'special_id' => 'required'
+        //     ]);
 
 
-            $edu = Education::create([
-                'user_id' => $request->user_id,
-                'grade_date' => $request->grade_date,
-                'grade' => $request->grade,
-                'ar_university' =>$request->ar_university,
-                'university' => $request->university,
-                'special_id' => $request->special_id,
-                'ar_qualification' => $this->qualification[$request->qualification],
-                'qualification' => $request->qualification,
-            ]);
+        //     $edu = Education::create([
+        //         'user_id' => $request->user_id,
+        //         'grade_date' => $request->grade_date,
+        //         'grade' => $request->grade,
+        //         'ar_university' =>$request->ar_university,
+        //         'university' => $request->university,
+        //         'special_id' => $request->special_id,
+        //         'ar_qualification' => $this->qualification[$request->qualification],
+        //         'qualification' => $request->qualification,
+        //     ]);
 
-            if($edu->save()) {
-                if(app()->getLocale() == 'ar') {
-                   \Session::flash('success' , 'تم الحفظ بنجاح');
-                } else {
-                 \Session::flash('success' , ' Data saved successfully');
-                }
-                return redirect()->route('web.mycv',app()->getLocale());
-             }
+        //     if($edu->save()) {
+        //         if(app()->getLocale() == 'ar') {
+        //            \Session::flash('success' , 'تم الحفظ بنجاح');
+        //         } else {
+        //          \Session::flash('success' , ' Data saved successfully');
+        //         }
+        //         return redirect()->route('web.mycv',app()->getLocale());
+        //      }
 
-                break;
+                // break;
 
-         case 'lang':
-             $request->validate([
-                'language' => 'required',
-                'language_level' => 'required',
-                ]);
+        //  case 'lang':
+        //      $request->validate([
+        //         'language' => 'required',
+        //         'language_level' => 'required',
+        //         ]);
 
-                $lang =  Language::create([
+        //         $lang =  Language::create([
 
-                    'user_id' => \Auth::user()->id,
-                    'language'=>$request->language,
-                    'ar_language' => $request->ar_language,
-                    'language_level' => $request->language_level,
-                    'ar_language_level' => $this->language_level[$request->language_level],
+        //             'user_id' => \Auth::user()->id,
+        //             'language'=>$request->language,
+        //             'ar_language' => $request->ar_language,
+        //             'language_level' => $request->language_level,
+        //             'ar_language_level' => $this->language_level[$request->language_level],
 
-                ]);
-
-
+        //         ]);
 
 
-                if($request->has('language') && $request->language !='') {
-                    $lang->language = $request->language;
-                    $lang->ar_language = $request->ar_language;
-                }
 
-                if($request->has('language_level') && $request->language_level !='' ) {
-                    $lang->language_level = $request->language_level;
-                    $lang->ar_language_level = $this->language_level[$request->language_level];
-                }
 
-                if($lang->save()){
-                if(app()->getLocale() == 'ar') {
-                    \Session::flash('success' , 'تم الحفظ بنجاح');
-                 } else {
-                  \Session::flash('success' , ' Data saved successfully');
-                 }
-                 return redirect()->route('web.mycv',app()->getLocale());
-            }
+        //         if($request->has('language') && $request->language !='') {
+        //             $lang->language = $request->language;
+        //             $lang->ar_language = $request->ar_language;
+        //         }
 
-                break;
+        //         if($request->has('language_level') && $request->language_level !='' ) {
+        //             $lang->language_level = $request->language_level;
+        //             $lang->ar_language_level = $this->language_level[$request->language_level];
+        //         }
+
+        //         if($lang->save()){
+        //         if(app()->getLocale() == 'ar') {
+        //             \Session::flash('success' , 'تم الحفظ بنجاح');
+        //          } else {
+        //           \Session::flash('success' , ' Data saved successfully');
+        //          }
+        //          return redirect()->route('web.mycv',app()->getLocale());
+        //     }
+
+        //         break;
 
                 case 'attch':
                     $request->validate([
@@ -433,7 +433,7 @@ class UserController extends Controller
         }
 
         if($request->has('level')) {
-            $expert->level = $request->level;
+            $expert->level_id = $request->level;
          }
 
 
@@ -459,67 +459,67 @@ class UserController extends Controller
 
 
 
-    if($request->select == 'edu_form') {
+    // if($request->select == 'edu_form') {
 
-    $edu = Education::findOrFail($id);
+    // $edu = Education::findOrFail($id);
 
-    if($request->has('qualification') && $request->qualification !='') {
-        $edu->qualification = $request->qualification;
-        $edu->ar_qualification = $this->qualification[$request->qualification];
-    }
-    if($request->has('university')) {
-        $edu->university = $request->university;
-    }
+    // if($request->has('qualification') && $request->qualification !='') {
+    //     $edu->qualification = $request->qualification;
+    //     $edu->ar_qualification = $this->qualification[$request->qualification];
+    // }
+    // if($request->has('university')) {
+    //     $edu->university = $request->university;
+    // }
 
-    if($request->has('ar_university')) {
-        $edu->ar_university = $request->ar_university;
-    }
+    // if($request->has('ar_university')) {
+    //     $edu->ar_university = $request->ar_university;
+    // }
 
-    if($request->has('grade_date')) {
-        $edu->grade_date = $request->grade_date;
-    }
+    // if($request->has('grade_date')) {
+    //     $edu->grade_date = $request->grade_date;
+    // }
 
-    if($request->has('grade')) {
-        $edu->grade = $request->grade;
-    }
+    // if($request->has('grade')) {
+    //     $edu->grade = $request->grade;
+    // }
 
-        if($request->has('special_id')){
-            $edu->special_id = $request->sub_special;
-        }
+    //     if($request->has('special_id')){
+    //         $edu->special_id = $request->sub_special;
+    //     }
 
-    if($edu->save()){
-        if(app()->getLocale() == 'ar') {
-            \Session::flash('success' , 'تم الحفظ بنجاح');
-         } else {
-          \Session::flash('success' , ' Data saved successfully');
-         }
-    }
-    }
+    // if($edu->save()){
+    //     if(app()->getLocale() == 'ar') {
+    //         \Session::flash('success' , 'تم الحفظ بنجاح');
+    //      } else {
+    //       \Session::flash('success' , ' Data saved successfully');
+    //      }
+    // }
+    // }
 
-    if($request->select == 'lang') {
+    // if($request->select == 'lang') {
 
-        $lang = Language::findOrFail($id);
+    //     $lang = Language::findOrFail($id);
 
-        if($request->has('language') && $request->language !='') {
-            $lang->language = $request->language;
-            $lang->ar_language = $this->language[$request->language];
-        }
+    //     if($request->has('language') && $request->language !='') {
+    //         $lang->language = $request->language;
+    //         $lang->ar_language = $this->language[$request->language];
+    //     }
 
-        if($request->has('language_level') && $request->language_level !='' ) {
-            $lang->language_level = $request->language_level;
-            $lang->ar_language_level = $this->language_level[$request->language_level];
-        }
+    //     if($request->has('language_level') && $request->language_level !='' ) {
+    //         $lang->language_level = $request->language_level;
+    //         $lang->ar_language_level = $this->language_level[$request->language_level];
+    //     }
 
-        if($lang->save()){
-        if(app()->getLocale() == 'ar') {
-            \Session::flash('success' , 'تم الحفظ بنجاح');
-         } else {
-          \Session::flash('success' , ' Data saved successfully');
-         }
-    }
+    //     if($lang->save()){
+    //     if(app()->getLocale() == 'ar') {
+    //         \Session::flash('success' , 'تم الحفظ بنجاح');
+    //      } else {
+    //       \Session::flash('success' , ' Data saved successfully');
+    //      }
+    // }
 
 
-    }
+    // }
 
 
     if($request->select == "attch") {
@@ -569,6 +569,7 @@ class UserController extends Controller
     if($request->select == "user_edit") {
        $user = User::findOrFail($id);
 
+       return __($request->gender);
 
         if($request->has('email') && $user->email != $request->email){
             $user->email = $request->email;
@@ -593,19 +594,19 @@ class UserController extends Controller
         }
 
         if($request->has('gender') && $request->gender !="") {
-            $user->gender = $request->gender;
+            $user->gender = ['en' => $request->gender , 'ar' => $this->gender[$request->gender]];
             $user->ar_gender = $this->gender[$request->gender];
         }
         if($request->has('name')) {
-            $user->name = $request->name;
+            $user->name = ['en' => $request->name , 'ar' => $request->ar_name];
             $user->ar_name = $request->ar_name;
         }
         if($request->has('last_name')) {
-            $user->last_name = $request->last_name;
+            $user->last_name = ['en' => $request->last_name ,  'ar' => $request->ar_last_name];
             $user->ar_last_name = $request->ar_last_name;
         }
         if($request->has('religion')) {
-            $user->religion = $request->religion;
+            $user->religion = ['en' => $request->religion , 'ar' => $this->religion[$request->religion]];
             $user->ar_religion = $this->religion[$request->religion];
         }
         if($request->has('social_status')) {
@@ -649,9 +650,9 @@ class UserController extends Controller
             $user->special_id = $request->special_id;
         }
 
-        if($request->has('level')) {
-           $user->level = $request->level;
-        }
+        // if($request->has('level')) {
+        //    $user->level_id = $request->level;
+        // }
 
         if($user->save()) {
             if($user->email_verified_at == null && $user->email != $request->email) {
@@ -688,19 +689,19 @@ class UserController extends Controller
                  return redirect()->route('web.mycv');
                  break;
 
-            case 'lang':
-                 $lang = Language::findOrFail($id);
-                 $lang->delete();
-                 \Session::flash('success' , app()->getLocale() == 'ar' ? 'تم الحذف بنجاح': 'Deleted successfully');
-                 return redirect()->route('web.mycv');
-                 break;
+            // case 'lang':
+            //      $lang = Language::findOrFail($id);
+            //      $lang->delete();
+            //      \Session::flash('success' , app()->getLocale() == 'ar' ? 'تم الحذف بنجاح': 'Deleted successfully');
+            //      return redirect()->route('web.mycv');
+            //      break;
 
-            case 'edu':
-                 $edu = Education::findOrFail($id);
-                 $edu->delete();
-                 \Session::flash('success' , app()->getLocale() == 'ar' ? 'تم الحذف بنجاح': 'Deleted successfully');
-                 return redirect()->route('web.mycv');
-                 break;
+            // case 'edu':
+            //      $edu = Education::findOrFail($id);
+            //      $edu->delete();
+            //      \Session::flash('success' , app()->getLocale() == 'ar' ? 'تم الحذف بنجاح': 'Deleted successfully');
+            //      return redirect()->route('web.mycv');
+            //      break;
         }
     }
 

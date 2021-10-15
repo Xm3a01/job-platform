@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Spatie\Translatable\HasTranslations;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\UserResetPasswordNotification;
 use Illuminate\Notifications\Notifiable;
@@ -10,6 +11,9 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
+    use HasTranslations;
+
+    public $translatable = ['name' , 'last_name','brith' , 'gender','level_of_work' , 'religion'];
 
     /**
      * The attributes that are mass assignable.
@@ -76,7 +80,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Education::class);
     }
-    
+
     public function languages()
     {
         return $this->hasMany(Language::class);
@@ -121,7 +125,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(SubSpecial::class);
     }
-    
+
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new UserResetPasswordNotification($token));

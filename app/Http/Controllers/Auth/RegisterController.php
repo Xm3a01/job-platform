@@ -6,7 +6,7 @@ use App\Role;
 use App\User;
 use App\Admin;
 use Illuminate\Http\Request;
-use App\Notifications\NewCv; 
+use App\Notifications\NewCv;
 use App\Notifications\WelcomeUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -85,32 +85,25 @@ class RegisterController extends Controller
 
         $gender =  [
             'Male' => 'ذكر',
-            'Female' => 'انثى'   
+            'Female' => 'انثى'
         ];
-
-        $this->validator($request->all(), 'users')->validate();
-        if($request->gender == "Male") {
-            $avatar = 'public/avatar/male.png';
-        } elseif($request->gender == "Female") {
-            $avatar = 'public/avatar/female.png';
-        }
 
           $user = User::create([
             'ar_name' => $request->name,
-            'name' => $request->name, 
+            'name' => ['en' => $request->name, 'ar' => $request->name],
             'ar_last_name' => $request->last_name,
-            'last_name' => $request->last_name, 
+            'last_name' => ['en' => $request->last_name,  'ar' => $request->last_name],
             'email' => $request->email,
             'role_id' => $request->role_id,
             'visit_count' => 1,
-            'gender' => $request->gender,
+            'gender' => ['en' => $request->gender, 'ar' => $gender[$request->gender]],
             'ar_gender' => $gender[$request->gender],
             'avatar' => $avatar,
-            'password' => Hash::make($request->password),            
+            'password' => Hash::make($request->password),
         ]);
-        
+
         // $user->notify(new WelcomeUser());
-        
+
         // $admins = Admin::all();
         //  Notification::send($admins , new NewCv($user));
          Auth::guard('web')->login($user);
